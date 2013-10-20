@@ -1,0 +1,13 @@
+{
+    "name": "Treasure2nd/mashup-awards9",
+    "require": {
+        "php": ">=5.4.0",
+        "pimple/pimple": "1.0.*",
+        "slim/slim": "2.2.0",
+        "slim/extras": "2.0.*",
+        "twig/twig": "1.13.*"
+    },
+    "autoload": {
+    	"psr-0": { "MA9": "src/" }
+    }
+}
