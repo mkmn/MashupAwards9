@@ -5,7 +5,14 @@
   <title>Nonbe</title>
   <meta name="description" content="旅先の酒造をめぐる人々を助けるWebサービス">
   <meta name="keywords" content="酒,酒造,旅">
+  <meta name="author" content="Treasure2ndMA9-A">
   <link href="{{ asset('/bootstrap/css/bootstrap.css') }}" rel="stylesheet">
+  <style type="text/css">
+    body {
+      padding-top: 60px;
+      padding-bottom: 40px;
+    }
+  </style>
   <link href="{{ asset('/bootstrap/css/bootstrap-responsive.css') }}" rel="stylesheet">
 </head>
 <body>
@@ -16,11 +23,32 @@
       </div>
     </div>
   </div>
+  <!-- ここからメインコンテンツ -->
   <div class="container">
+    <div class="row">
+      <div class="span6 offset3">
+        <h1>hello</h1>
+	<form action="{{ urlFor('geoset') }}" method="post" class="form-horizontal well">
+	  <div class="control-group">
+	    <label class="control-label" for="department">県</label>
+	    <div class="controls">
+	      <input id="destination" name="department" type="select" class="span3" />
+	    </div>
+	  </div>
+	  <div class="control-group">
+	    <label class="control-label" for="address">所在地</label>
+	    <div class="controls">
+	      <input id="address" name="address" type="text" class="span3" />
+	    </div>
+	  </div>
+	</form>
+      </div>
+    </div>
     <footer>
       <p>&copy; Treasure2ndMA9-A 2013</p>
     </footer>
   </div>
   <script src="{{ asset('/js/jquery-2.0.0.js') }}"></script>
+  <script src="{{ asset('/bootstrap/js/bootstrap.js') }}"></script>
 </body>
 </html>
