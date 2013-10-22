@@ -5,4 +5,6 @@ TOP: {
         $app->render('index.html.twig');
     })
     ->name('top');
+
+    $app->post('/'), function() use ($app, $containr
 }
