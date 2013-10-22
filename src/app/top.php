@@ -5,6 +5,10 @@ TOP: {
         $app->render('index.html.twig');
     })
     ->name('top');
-
-    $app->post('/'), function() use ($app, $containr
+    
+    // testのために記述
+    $app->post('/', function() use ($app) {
+        $app->render('index.html.twig');
+    })
+    ->name('geoset');
 }
