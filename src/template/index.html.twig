@@ -28,7 +28,7 @@
   <div class="container">
     <div class="row">
       <div class="span6 offset3">
-        <h1>hello</h1>
+        <h2>旅行先の住所を入力してね〜</h2>
 	<form action="{{ urlFor('geoset') }}" method="post" class="form-horizontal well">
 	  <div class="control-group">
 	    <label class="control-label" for="department">県</label>
@@ -45,7 +45,11 @@
 	      <input id="address" name="address" type="text" class="span3" />
 	    </div>
 	  </div>
-	  <button id="send" type="submit" class="btn btn-success">送信</button>
+	  <div class="control-group">
+	    <div class="controls offset3">
+	      <button id="send" type="submit" class="btn btn-success">送信</button>
+	    </div>
+	  </div>
 	</form>
         <div id="map" style="width: 600px; height: 300px"></div>
       </div>
