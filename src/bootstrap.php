@@ -22,4 +22,14 @@ twig: {
     });
 }
 
+Repositorys: {
+    $container['repository.maker'] = $container->share(function() {
+        return new \MA9\Repository\MakerRepository();
+    });
+
+    $container['repository.geocode'] = $container->share(function() {
+        return new \MA9\Repository\MakerRepository();
+    });
+}
+
 return $container;
