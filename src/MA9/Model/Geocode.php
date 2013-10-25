@@ -1,11 +1,9 @@
 <?php
 namespace MA9\Model;
 
-class Maker
+class Geocode
 {
-    public $name;
-    public $postcode;
     public $address;
+    public $prefecture;
     public $coordinate;
-    public $url;
 }
