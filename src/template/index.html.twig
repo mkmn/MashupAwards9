@@ -29,7 +29,7 @@
     <div class="row">
       <div class="span6 offset3">
         <h2>旅行先の住所を入力してね〜</h2>
-	<form action="{{ urlFor('geoset') }}" method="post" id="data" class="form-horizontal well">
+	<form action="{{ urlFor('geoset') }}" id="data" class="form-horizontal well">
 	  <div class="control-group">
 	    <label class="control-label" for="department">県</label>
 	    <div class="controls">
@@ -70,18 +70,17 @@
       department = $form.find('select[name="department"]').val(),
       address = $form.find('input[name="address"]').val(),
       posturl = $form.attr("action");
-      console.log(department);
-      console.log(address);
+      //console.log(department);
+      //console.log(address);
       $.ajax({
         type: 'post',
 	url: posturl,
 	data: {
 	  'department': department,
 	  'address': address
-	},
-	success: function(data) {
-	  alert(data);
 	}
+      }).done(function(data) {
+	console.log(data);
       });
     });
   </script>

@@ -16,7 +16,7 @@ TOP: {
 	  "maker_address":"長野県安曇野市豊科高家1090-1",
 	  "maker_url":"http://www.eh-shuzo.com/"}]
 	  }';
-        $app->render('index.html.twig');
+	print $makers;
     })
     ->name('geoset');
 }
