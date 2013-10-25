@@ -33,7 +33,7 @@
 	  <div class="control-group">
 	    <label class="control-label" for="department">県</label>
 	    <div class="controls">
-	      <select class="department" name="department">
+	      <select id="department" name="department">
 	      <!-- sample -->
 	        <option value="1">北海道</option>
               </select>
@@ -66,23 +66,26 @@
   <script>
     $('#data').submit(function(event) {
       event.preventDefault();
-      var $form = $(this),
-      department = $form.find('select[name="department"]').val(),
-      address = $form.find('input[name="address"]').val(),
-      posturl = $form.attr("action");
+      var department = $('#department').val(),
+      address = $('#address').val(),
+      posturl = $('#data').attr("action");
       //console.log(department);
       //console.log(address);
+      //console.log(posturl);
       $.ajax({
-        type: 'post',
+        type: 'POST',
 	url: posturl,
 	data: {
 	  'department': department,
 	  'address': address
 	}
       }).done(function(data) {
+        //dataはajaxによって返されたデータ
 	var obj = $.parseJSON(data);
 	var makers = obj.makers;
 	console.log(makers[0].maker_name);
+
+	//地図に対する処理
         var ymap = new Y.Map("map");
         ymap.drawMap(new Y.LatLng(35, 139), 17, Y.LayerSetId.NORMAL);
         ymap.setConfigure('dragging',true);
