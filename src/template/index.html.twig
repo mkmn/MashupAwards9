@@ -80,7 +80,16 @@
 	  'address': address
 	}
       }).done(function(data) {
-	console.log(data);
+	var obj = $.parseJSON(data);
+	var makers = obj.makers;
+	console.log(makers[0].maker_name);
+        var ymap = new Y.Map("map");
+        ymap.drawMap(new Y.LatLng(35, 139), 17, Y.LayerSetId.NORMAL);
+        ymap.setConfigure('dragging',true);
+        ymap.setConfigure('singleClickPan',true);
+        ymap.setConfigure('doubleClickZoom',true);
+        ymap.setConfigure('continuousZoom',true);
+        ymap.setConfigure('scrollWheelZoom',true);
       });
     });
   </script>
