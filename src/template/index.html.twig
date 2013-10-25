@@ -29,7 +29,7 @@
     <div class="row">
       <div class="span6 offset3">
         <h2>旅行先の住所を入力してね〜</h2>
-	<form action="{{ urlFor('geoset') }}" method="post" class="form-horizontal well">
+	<form action="{{ urlFor('geoset') }}" method="post" id="data" class="form-horizontal well">
 	  <div class="control-group">
 	    <label class="control-label" for="department">県</label>
 	    <div class="controls">
@@ -63,5 +63,27 @@
   <script src="{{ asset('/select2-3.4.2/select2.min.js') }}"></script>
   <script charset="utf-8" src="http://js.api.olp.yahooapis.jp/OpenLocalPlatform/V1/jsapi?appid=dj0zaiZpPW5Lc3pIWGphWEZKNyZzPWNvbnN1bWVyc2VjcmV0Jng9Y2M-"></script>
   <script src="{{ asset('/js/main.js') }}"></script>
+  <script>
+    $('#data').submit(function(event) {
+      event.preventDefault();
+      var $form = $(this),
+      department = $form.find('select[name="department"]').val(),
+      address = $form.find('input[name="address"]').val(),
+      posturl = $form.attr("action");
+      console.log(department);
+      console.log(address);
+      $.ajax({
+        type: 'post',
+	url: posturl,
+	data: {
+	  'department': department,
+	  'address': address
+	},
+	success: function(data) {
+	  alert(data);
+	}
+      });
+    });
+  </script>
 </body>
 </html>
