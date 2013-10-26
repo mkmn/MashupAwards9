@@ -92,7 +92,6 @@
     });
     $('#data').submit(function(event) {
       event.preventDefault();
-      $('#send').button('loading');
       var posturl = $('#data').attr("action");
       //console.log(department);
       //console.log(address);
@@ -124,7 +123,6 @@
         ymap.setConfigure('continuousZoom',true);
         ymap.setConfigure('scrollWheelZoom',true);
 	ymap.addFeatures(marders);
-	$('#send').button('reset');
       });
     });
   </script>
