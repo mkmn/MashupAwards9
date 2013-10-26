@@ -27,7 +27,7 @@
   <!-- ここからメインコンテンツ -->
   <div class="container">
     <div class="row">
-      <div class="span6 offset3">
+      <div class="span6 offset2">
         <h2>旅行先の住所を入力してね〜</h2>
 	<form action="{{ urlFor('geoset') }}" id="data" class="form-horizontal well">
 	  <div class="control-group">
@@ -53,10 +53,15 @@
 	  </div>
 	</form>
       </div>
-      <div class="row">
-        <div class="offset2 span8">
-          <div id="map" style="width: 670px; height: 300px"></div>
-	</div>
+    </div>
+    <div class="row">
+      <div class="span8">
+        <div id="map" style="width: 600px; height: 400px"></div>
+      </div>
+      <div class="span4">
+	<div id="items">
+	  <h3>アイテム一覧</h3>
+        </div>
       </div>
     </div>
     <footer>
