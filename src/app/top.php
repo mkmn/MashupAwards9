@@ -7,18 +7,15 @@ TOP: {
     ->name('top');
     
     // testのために記述
-    $app->post('/', function() use ($app, $container) {
+    $app->post('/', function() use ($app) {
         $input = $app->request()->post();
-	// postされたデータから、geoコードを受け取る
-	$rep_geocode = $container['repository.geocode'];
-	$rep_maker = $container['repository.maker'];
-	// geoコードから酒造のデータを取得
-	$makers = '{"makers":[{"maker_name":"ＥＨ酒造",
-	  "maker_postcode":"399-8204",
-	  "maker_address":"長野県安曇野市豊科高家1090-1",
-	  "maker_url":"http://www.eh-shuzo.com/"}]
-	  }';
-	
+        
+        if($input['department'] < 1 && $input['department'] > 47) {
+            $input['department'] = 13;
+        }
+
+        //$makers = $container['repository.maker']->findByPrefecture($input['department']);
+        //print json_encode($makers);
     })
     ->name('geoset');
 }
