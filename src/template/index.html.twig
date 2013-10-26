@@ -44,7 +44,14 @@
 	    </div>
 	  </div>
 	</form>
-        <div id="map" style="width: 600px; height: 300px"></div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="span8">
+        <div id="map" style="width: 620px; height: 400px"></div>
+      </div>
+      <div class="span4">
+        <div id="items"><h3>item一覧hogehogehoge</h3></div>
       </div>
     </div>
     <footer>
@@ -98,10 +105,15 @@
 	}
       }).done(function(data) {
         //dataはajaxによって返されたデータ
-	//var obj = $.parseJSON(data);
+	var infomakers = $.parseJSON(data),
+	makers = infomakers.makers,
+	markers = [];
+	for(var i=0; i<makers.length; i++) {
+	  markers.push( makers[i].geocode );
+	}
 	//var makers = obj.makers;
 	//console.log(makers[0].maker_name);
-	console.log(data);
+	//console.log(data);
 
 	//地図に対する処理
         var ymap = new Y.Map("map");
@@ -111,6 +123,7 @@
         ymap.setConfigure('doubleClickZoom',true);
         ymap.setConfigure('continuousZoom',true);
         ymap.setConfigure('scrollWheelZoom',true);
+	ymap.addFeatures(marders);
       });
     });
   </script>
