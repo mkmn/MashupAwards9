@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(function() {
   $('#department').select2();
   var ymap = new Y.Map("map");
   ymap.drawMap(new Y.LatLng(35.665627,139.730738), 17, Y.LayerSetId.NORMAL);

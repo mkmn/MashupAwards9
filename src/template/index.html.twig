@@ -35,7 +35,8 @@
 	    <div class="controls">
 	      <select id="department" name="department">
 	      <!-- sample -->
-	        <option value="1">北海道</option>
+	        <option value="北海道">北海道</option>
+	        <option value="青森">青森</option>
               </select>
 	    </div>
 	  </div>
@@ -61,7 +62,7 @@
   <script src="{{ asset('/js/jquery-2.0.0.js') }}"></script>
   <script src="{{ asset('/bootstrap/js/bootstrap.js') }}"></script>
   <script src="{{ asset('/select2-3.4.2/select2.min.js') }}"></script>
-  <script charset="utf-8" src="http://js.api.olp.yahooapis.jp/OpenLocalPlatform/V1/jsapi?appid=dj0zaiZpPW5Lc3pIWGphWEZKNyZzPWNvbnN1bWVyc2VjcmV0Jng9Y2M-"></script>
+  <script charset="utf-8" src="http://js.api.olp.yahooapis.jp/OpenLocalPlatform/V1/jsapi?appid=dj0zaiZpPXQzOGhaYWJZVGcxZSZzPWNvbnN1bWVyc2VjcmV0Jng9NDA-"></script>
   <script src="{{ asset('/js/main.js') }}"></script>
   <script>
     $('#data').submit(function(event) {
@@ -81,9 +82,10 @@
 	}
       }).done(function(data) {
         //dataはajaxによって返されたデータ
-	var obj = $.parseJSON(data);
-	var makers = obj.makers;
-	console.log(makers[0].maker_name);
+	//var obj = $.parseJSON(data);
+	//var makers = obj.makers;
+	//console.log(makers[0].maker_name);
+	console.log(data);
 
 	//地図に対する処理
         var ymap = new Y.Map("map");
