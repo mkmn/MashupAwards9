@@ -28,7 +28,7 @@ Repositorys: {
     });
 
     $container['repository.geocode'] = $container->share(function() {
-        return new \MA9\Repository\MakerRepository();
+        return new \MA9\Repository\GeocodeRepository();
     });
 }
 
