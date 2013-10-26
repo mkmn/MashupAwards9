@@ -48,7 +48,7 @@
 	  </div>
 	  <div class="control-group">
 	    <div class="controls offset3">
-	      <button id="send" type="submit" class="btn btn-success">送信</button>
+	      <button id="send" type="submit" data-loding-text="Loading..." class="btn btn-success">送信</button>
 	    </div>
 	  </div>
 	</form>
@@ -67,6 +67,7 @@
   <script>
     $('#data').submit(function(event) {
       event.preventDefault();
+      $('#send').button('loading');
       var department = $('#department').val(),
       address = $('#address').val(),
       posturl = $('#data').attr("action");
@@ -95,6 +96,8 @@
         ymap.setConfigure('doubleClickZoom',true);
         ymap.setConfigure('continuousZoom',true);
         ymap.setConfigure('scrollWheelZoom',true);
+
+	$('#send').button('reset');
       });
     });
   </script>
