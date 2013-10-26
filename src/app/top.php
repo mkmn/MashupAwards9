@@ -8,7 +8,14 @@ TOP: {
     
     // testのために記述
     $app->post('/', function() use ($app) {
-        $app->render('index.html.twig');
+        $input = $app->request()->post();
+
+        if($input['department'] >= 1 && $input['department'] <= 47) {
+            $input['department'] = 13;
+        }
+
+        $makers = $container['repository.maker']->findByPrefecture($input['department']);
+        print json_encode($makers);
     })
     ->name('geoset');
 }
