@@ -28,14 +28,15 @@
   <div class="container">
     <div class="row">
       <div class="span6 offset3">
-        <h1>hello</h1>
-	<form action="{{ urlFor('geoset') }}" method="post" class="form-horizontal well">
+        <h2>旅行先の住所を入力してね〜</h2>
+	<form action="{{ urlFor('geoset') }}" id="data" class="form-horizontal well">
 	  <div class="control-group">
 	    <label class="control-label" for="department">県</label>
 	    <div class="controls">
-	      <select class="department" name="department">
+	      <select id="department" name="department">
 	      <!-- sample -->
 	        <option value="1">北海道</option>
+	        <option value="2">青森</option>
               </select>
 	    </div>
 	  </div>
@@ -43,6 +44,11 @@
 	    <label class="control-label" for="address">所在地</label>
 	    <div class="controls">
 	      <input id="address" name="address" type="text" class="span3" />
+	    </div>
+	  </div>
+	  <div class="control-group">
+	    <div class="controls offset3">
+	      <button id="send" type="submit" class="btn btn-success">送信</button>
 	    </div>
 	  </div>
 	</form>
@@ -56,7 +62,41 @@
   <script src="{{ asset('/js/jquery-2.0.0.js') }}"></script>
   <script src="{{ asset('/bootstrap/js/bootstrap.js') }}"></script>
   <script src="{{ asset('/select2-3.4.2/select2.min.js') }}"></script>
-  <script charset="utf-8" src="http://js.api.olp.yahooapis.jp/OpenLocalPlatform/V1/jsapi?appid=dj0zaiZpPW5Lc3pIWGphWEZKNyZzPWNvbnN1bWVyc2VjcmV0Jng9Y2M-"></script>
+  <script charset="utf-8" src="http://js.api.olp.yahooapis.jp/OpenLocalPlatform/V1/jsapi?appid=dj0zaiZpPXQzOGhaYWJZVGcxZSZzPWNvbnN1bWVyc2VjcmV0Jng9NDA-"></script>
   <script src="{{ asset('/js/main.js') }}"></script>
+  <script>
+    $('#data').submit(function(event) {
+      event.preventDefault();
+      var department = $('#department').val(),
+      address = $('#address').val(),
+      posturl = $('#data').attr("action");
+      //console.log(department);
+      //console.log(address);
+      //console.log(posturl);
+      $.ajax({
+        type: 'POST',
+	url: posturl,
+	data: {
+	  'department': department,
+	  'address': address
+	}
+      }).done(function(data) {
+        //dataはajaxによって返されたデータ
+	//var obj = $.parseJSON(data);
+	//var makers = obj.makers;
+	//console.log(makers[0].maker_name);
+	console.log(data);
+
+	//地図に対する処理
+        var ymap = new Y.Map("map");
+        ymap.drawMap(new Y.LatLng(35, 139), 17, Y.LayerSetId.NORMAL);
+        ymap.setConfigure('dragging',true);
+        ymap.setConfigure('singleClickPan',true);
+        ymap.setConfigure('doubleClickZoom',true);
+        ymap.setConfigure('continuousZoom',true);
+        ymap.setConfigure('scrollWheelZoom',true);
+      });
+    });
+  </script>
 </body>
 </html>
