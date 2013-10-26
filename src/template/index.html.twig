@@ -32,16 +32,6 @@
         <h2>旅行先の住所を入力してね〜</h2>
 	<form action="{{ urlFor('geoset') }}" id="data" class="form-horizontal well">
 	  <div class="control-group">
-	    <label class="control-label" for="department">県</label>
-	    <div class="controls">
-	      <select id="department" name="department">
-	      <!-- sample -->
-	        <option value="1">北海道</option>
-	        <option value="2">青森</option>
-              </select>
-	    </div>
-	  </div>
-	  <div class="control-group">
 	    <label class="control-label" for="address">所在地</label>
 	    <div class="controls">
 	      <input id="address" name="address" type="text" class="span3" />
@@ -85,7 +75,6 @@
                 for(var i=0; i<cache.length; i++) {
                     source[i] = {label: cache[i].address, value: i};
                 }
-                console.log(cache);
                 responce(source);
             });
         },
@@ -97,9 +86,7 @@
     });
     $('#data').submit(function(event) {
       event.preventDefault();
-      var department = $('#department').val(),
-      address = $('#address').val(),
-      posturl = $('#data').attr("action");
+      var posturl = $('#data').attr("action");
       //console.log(department);
       //console.log(address);
       //console.log(posturl);
@@ -107,8 +94,7 @@
         type: 'POST',
 	url: posturl,
 	data: {
-	  'department': department,
-	  'address': address
+        prefecture: $('#prefecture').val()
 	}
       }).done(function(data) {
         //dataはajaxによって返されたデータ
