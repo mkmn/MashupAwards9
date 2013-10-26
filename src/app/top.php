@@ -10,7 +10,7 @@ TOP: {
     $app->post('/', function() use ($app) {
         $input = $app->request()->post();
 
-        if($input['department'] >= 1 && $input['department'] <= 47) {
+        if($input['department'] < 1 && $input['department'] > 47) {
             $input['department'] = 13;
         }
 
