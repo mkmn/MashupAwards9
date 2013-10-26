@@ -1,6 +1,9 @@
 <?php
 namespace MA9\Repository;
 
+use MA9\Model\Geocode;
+use MA9\Model\Coordinate;
+
 class GeocodeRepository
 {
     const URL = 'http://geo.search.olp.yahooapis.jp/OpenLocalPlatform/V1/geoCoder';
@@ -20,7 +23,19 @@ class GeocodeRepository
         $response = json_decode($response);
         // 住所情報が見つかった場合
         if($response->ResultInfo->Status == 200) {
-            return $response->Feature[0]->Geometry->Coordinates;
+            $geos = [];
+            foreach($response->Feature as $data) {
+                $geo = new Geocode();
+                $geo->address = $data->Property->Address;
+                $geo->prefecture = substr($data->Property->GovernmentCode, 0, 2);
+                $c = explode(',', $data->Geometry->Coordinates);
+                $coo = new Coordinate();
+                $coo->lat = $c[1];
+                $coo->lon = $c[0];
+                $geo->coordinate = $coo;
+                $geos[] = $geo;
+            }
+            return $geos;
         }
 
         return false;

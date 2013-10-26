@@ -25,11 +25,14 @@ class MakerRepository
         $response = curl_exec($ch);
         curl_close($ch);
 
-        $response = json_decode($response, TRUE);
+        $response = json_decode($response);
         $makers = [];
-        foreach($response['makers'] as $array) {
+        foreach($response->makers as $data) {
             $maker = new Maker();
-            $maker->setProperties($array);
+            $maker->name = $data->maker_name;
+            $maker->postcode = $data->maker_postcode;
+            $maker->address = $data->maker_address;
+            $maker->url = $data->maker_url;
             $makers[] = $maker;
         }
         
