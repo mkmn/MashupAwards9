@@ -40,7 +40,7 @@
 	  </div>
 	  <div class="control-group">
 	    <div class="controls offset3">
-	      <button id="send" type="submit" class="btn btn-success">送信</button>
+	      <button id="send" type="submit" class="btn btn-success" data-loading-text="Loading...">送信</button>
 	    </div>
 	  </div>
 	</form>
@@ -93,6 +93,7 @@
     });
     $('#data').submit(function(event) {
       event.preventDefault();
+      $('#send').button('loading');
       var posturl = $('#data').attr("action");
       //console.log(department);
       //console.log(address);
@@ -124,6 +125,7 @@
         ymap.setConfigure('continuousZoom',true);
         ymap.setConfigure('scrollWheelZoom',true);
 	ymap.addFeatures(marders);
+	$('#send').button('reset');
       });
     });
   </script>
