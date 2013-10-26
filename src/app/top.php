@@ -18,4 +18,13 @@ TOP: {
         print json_encode($makers);
     })
     ->name('geoset');
+
+    $app->post('/address', function() use ($app, $container) {
+        $input = $app->request()->post();
+
+        $geocodes = $container['repository.geocode']->findByAddress($input['address']);
+
+        print json_encode($geocodes);
+    })
+    ->name('address');
 }
