@@ -14,6 +14,7 @@
     }
   </style>
   <link href="{{ asset('/bootstrap/css/bootstrap-responsive.css') }}" rel="stylesheet">
+  <link href="{{ asset('/jquery-ui/css/jquery-ui-1.10.3.min.css') }}" rel="stylesheet">
   <link href="{{ asset('/select2-3.4.2/select2.css') }}" rel="stylesheet">
 </head>
 <body>
@@ -31,19 +32,10 @@
         <h2>旅行先の住所を入力してね〜</h2>
 	<form action="{{ urlFor('geoset') }}" id="data" class="form-horizontal well">
 	  <div class="control-group">
-	    <label class="control-label" for="department">県</label>
-	    <div class="controls">
-	      <select id="department" name="department">
-	      <!-- sample -->
-	        <option value="1">北海道</option>
-	        <option value="2">青森</option>
-              </select>
-	    </div>
-	  </div>
-	  <div class="control-group">
 	    <label class="control-label" for="address">所在地</label>
 	    <div class="controls">
 	      <input id="address" name="address" type="text" class="span3" />
+          <input id="prefecture" name="prefecture" type="hidden">
 	    </div>
 	  </div>
 	  <div class="control-group">
@@ -61,15 +53,40 @@
   </div>
   <script src="{{ asset('/js/jquery-2.0.0.js') }}"></script>
   <script src="{{ asset('/bootstrap/js/bootstrap.js') }}"></script>
+  <script src="{{ asset('/jquery-ui/js/jquery-ui-1.10.3.min.js') }}"></script>
   <script src="{{ asset('/select2-3.4.2/select2.min.js') }}"></script>
   <script charset="utf-8" src="http://js.api.olp.yahooapis.jp/OpenLocalPlatform/V1/jsapi?appid=dj0zaiZpPXQzOGhaYWJZVGcxZSZzPWNvbnN1bWVyc2VjcmV0Jng9NDA-"></script>
   <script src="{{ asset('/js/main.js') }}"></script>
   <script>
+    var cache;
+    $('#address').autocomplete({
+        autoFocus: true,
+        minLength: 2,
+        source: function(request, responce) {
+            $.ajax({
+                type: 'POST',
+                url: '{{ urlFor('address') }}',
+                data: {
+                    address: request.term
+                }
+            }).done(function(data) {
+                cache = $.parseJSON(data);
+                var source = [];
+                for(var i=0; i<cache.length; i++) {
+                    source[i] = {label: cache[i].address, value: i};
+                }
+                responce(source);
+            });
+        },
+        select: function(event, ui) {
+            var val = ui.item.value;
+            $('#prefecture').val(cache[val].prefecture);
+            ui.item.value = cache[val].address;
+        }
+    });
     $('#data').submit(function(event) {
       event.preventDefault();
-      var department = $('#department').val(),
-      address = $('#address').val(),
-      posturl = $('#data').attr("action");
+      var posturl = $('#data').attr("action");
       //console.log(department);
       //console.log(address);
       //console.log(posturl);
@@ -77,8 +94,7 @@
         type: 'POST',
 	url: posturl,
 	data: {
-	  'department': department,
-	  'address': address
+        prefecture: $('#prefecture').val()
 	}
       }).done(function(data) {
         //dataはajaxによって返されたデータ
