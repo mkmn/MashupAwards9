@@ -25,7 +25,11 @@ TOP: {
 
         $geocodes = $container['repository.geocode']->findByAddress($input['address']);
 
-        print json_encode($geocodes);
+        if($geocodes) {
+            print json_encode($geocodes);
+        } else {
+            print 'null';
+        }
     })
     ->name('address');
 }

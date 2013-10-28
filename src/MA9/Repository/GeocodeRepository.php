@@ -22,7 +22,7 @@ class GeocodeRepository
 
         $response = json_decode($response);
         // 住所情報が見つかった場合
-        if($response->ResultInfo->Status == 200) {
+        if($response->ResultInfo->Status == 200 && $response->ResultInfo->Count > 0) {
             $geos = [];
             foreach($response->Feature as $data) {
                 $geo = new Geocode();
