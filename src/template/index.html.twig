@@ -77,7 +77,6 @@
                 }
             }).done(function(data) {
                 cache = $.parseJSON(data);
-		console.log(cache);
                 var source = [];
                 for(var i=0; i<cache.length; i++) {
                     source[i] = {label: cache[i].address, value: i};
@@ -89,11 +88,11 @@
             var val = ui.item.value;
             $('#prefecture').val(cache[val].prefecture);
             ui.item.value = cache[val].address;
-	    var coordinate = cache[val].coordinate;
-	    var ymap = new Y.Map("map");
-	    console.log(ymap);
-	    var YLL = new Y.LatLng(coordinate.lat, coordinate.lon);
-	    console.log(coordinate.lat);
+	    var coordinate = cache[val].coordinate,
+	    ymap = new Y.Map("map"),
+	    YLL = new Y.LatLng(coordinate.lat, coordinate.lon);
+
+	    //各種設定
 	    ymap.drawMap(YLL, 17, Y.LayerSetId.NORMAL);
             ymap.setConfigure('dragging',true);
             ymap.setConfigure('singleClickPan',true);
