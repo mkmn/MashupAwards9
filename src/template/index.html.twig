@@ -29,7 +29,7 @@
   <div class="navbar navbar-inverse navbar-fixed-top">
     <div class="navbar-inner">
       <div class="container">
-        <a class="brand" href="/">Nonbe-旅行先からお近くの酒蔵を探します</a>
+        <a class="brand" href="/">Nonbe-旅行先の酒蔵を探します</a>
       </div>
     </div>
   </div>
@@ -76,6 +76,7 @@
   <script src="{{ asset('/js/main.js') }}"></script>
   <script>
     var cache;
+    var ymap = new Y.Map("map");
     $('#address').autocomplete({
         autoFocus: true,
         minLength: 2,
@@ -108,16 +109,9 @@
                 ui.item.value = cache[val].address;
 	            
                 var coordinate = cache[val].coordinate,
-	            ymap = new Y.Map("map"),
 	            YLL = new Y.LatLng(coordinate.lat, coordinate.lon);
 
-	            //各種設定
 	            ymap.drawMap(YLL, 17, Y.LayerSetId.NORMAL);
-                ymap.setConfigure('dragging',true);
-                ymap.setConfigure('singleClickPan',true);
-                ymap.setConfigure('doubleClickZoom',true);
-                ymap.setConfigure('continuousZoom',true);
-                ymap.setConfigure('scrollWheelZoom',true);
             }
        }
     });
@@ -136,6 +130,8 @@
       }).done(function(data) {
         //dataはajaxによって返されたデータ
     	var makers = $.parseJSON(data);
+	//酒蔵の名前をマーカーに載せるために必要
+	var flag = -1;
 	    for(var i = 0; i<makers.length; i++){
             $('#makers').append(
                 '<div class="maker">' + makers[i].name + '</div>'
@@ -147,9 +143,12 @@
                     address: makers[i].address
                 }
             }).done(function(data) {
+	        flag++;
                 if(data != 'null') {
                     var geo = $.parseJSON(data);
-                    console.log(geo[0].coordinate);
+		    var marker = new Y.Marker(new Y.LatLng(geo[0].coordinate.lat, geo[0].coordinate.lon));
+		    marker.title = makers[flag].name;
+		    ymap.addFeature(marker);
                 }
             });
 	    }
