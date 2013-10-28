@@ -12,6 +12,10 @@
       padding-top: 60px;
       padding-bottom: 40px;
     }
+    #makers {
+        height: 400px;
+        overflow-y: scroll;
+    }
     .autocomplete-loading {
         background: url('{{ asset('img/loader.gif') }}') right center no-repeat;
         background-size: 16px 16px;
@@ -36,7 +40,7 @@
 	<form action="{{ urlFor('geoset') }}" id="data" class="form-horizontal well">
 	  <div class="control-group">
 	    <label class="control-label" for="address">旅行先はどちら??</label>
-	    <div class="controls">
+        <div class="controls">
 	      <input id="address" name="address" type="text" class="span3" />
           <input id="prefecture" name="prefecture" type="hidden" value="13">
 	    </div>
@@ -54,9 +58,9 @@
         <div id="map" style="width: 620px; height: 400px"></div>
       </div>
       <div class="span4">
-        <h3>item一覧hogehogehoge</h3>
-        <div id="items">
-          <img src="{{ asset('img/loader.gif') }}" id="loader" class="text-center" style="display:none;">
+        <div id="makers">
+            <h3>item一覧hogehogehoge</h3>
+            <img src="{{ asset('img/loader.gif') }}" id="loader" class="text-center" style="display:none;">
         </div>
       </div>
     </div>
@@ -121,6 +125,7 @@
       event.preventDefault();
       $('#send').button('loading');
       $('#loader').toggle();
+      $('#makers').remove('.maker');
       var posturl = $('#data').attr("action");
       $.ajax({
         type: 'POST',
@@ -132,6 +137,9 @@
         //dataはajaxによって返されたデータ
     	var makers = $.parseJSON(data);
 	    for(var i = 0; i<makers.length; i++){
+            $('#makers').append(
+                '<div class="maker">' + makers[i].name + '</div>'
+            );
             $.ajax({
                 type: 'POST',
                 url: '{{ urlFor('address') }}',
