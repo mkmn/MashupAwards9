@@ -114,19 +114,22 @@
         prefecture: $('#prefecture').val()
 	}
       }).done(function(data) {
-        /*dataはajaxによって返されたデータ
-	var infomakers = $.parseJSON(data),
-	makers = infomakers.makers,
-	markers = [];
-	for(var i=0; i<makers.length; i++) {
+        //dataはajaxによって返されたデータ
+	var infomakers = $.parseJSON(data);
+	console.log(infomakers);
+	for(var i = 0;i<infomakers.length;i++){
+	  markers.push(infomakers[i].coordinate);
+	}
+	console.log(markers);
+	/*for(var i=0; i<makers.length; i++) {
 	  markers.push( makers[i].geocode );
 	}
-	//var makers = obj.makers;
-	//console.log(makers[0].maker_name);
-	//console.log(data);
+	var makers = obj.makers;
+	console.log(makers[0].maker_name);
+	console.log(data);
 
-	*///地図に対する処理
-	//ymap.addFeatures(marders);
+	地図に対する処理
+	ymap.addFeatures(markers); */
       });
     });
   </script>
