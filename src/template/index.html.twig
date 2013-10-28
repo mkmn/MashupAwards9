@@ -119,7 +119,7 @@
       event.preventDefault();
       $('#send').button('loading');
       $('#loader').toggle();
-      $('#makers').remove('.maker');
+      $('.maker').remove();
       var posturl = $('#data').attr("action");
       $.ajax({
         type: 'POST',
