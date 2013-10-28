@@ -20,10 +20,19 @@
         padding-top: 0;
         }
     }
+    .loader {
+        display: block;
+        margin: auto;
+    }
     #makers {
         border: 1px solid #cccccc;
-        height:430px;
+        height:450px;
         overflow-y: scroll;
+    }
+    .maker {
+        margin:0;
+        padding: 5px 10px;
+        border-bottom: 1px solid #cccccc;
     }
     .autocomplete-loading {
         background: url('{{ asset('img/loader.gif') }}') right center no-repeat;
@@ -54,16 +63,22 @@
     <div class="row">
       <div class="span8" id="map" style="height:500px;"></div>
       <div class="span4">
-        <h3 class="text-center">近隣の酒造</h3>
-        <div id="makers">
-            <img src="{{ asset('img/loader.gif') }}" id="loader" class="text-center" style="display:none;">
+        <div class="navbar">
+            <div class="navbar-inner">
+                <span class="brand">旅行先の酒造</span>
+            </div>
+            <div id="makers">
+                <img src="{{ asset('img/loader.gif') }}" id="loader" class="loader" style="display:none;">
+            </div>
         </div>
       </div>
     </div>
-    <footer>
-      <p>&copy; Treasure2ndMA9-A 2013</p>
-    </footer>
   </div>
+  <footer class="navbar navbar-fixed-bottom">
+    <div class="navbar-inner text-center">
+        <p>&copy; Treasure2ndMA9-A 2013</p>
+    </div>
+  </footer>
   <script src="{{ asset('/js/jquery-2.0.0.js') }}"></script>
   <script src="{{ asset('/jquery-ui/js/jquery-ui-1.10.3.min.js') }}"></script>
   <script src="{{ asset('/select2-3.4.2/select2.min.js') }}"></script>
@@ -129,7 +144,11 @@
     	    var flag = -1;
     	    for(var i = 0; i<makers.length; i++){
                 $('#makers').append(
-                    '<div class="maker">' + makers[i].name + '</div>'
+                    '<dl class="maker">' + 
+                        '<h4>' + makers[i].name + '</h4>' + 
+                        '<dt>住所</dt><dd>' + makers[i].address + '</dd>' +
+                        '<dt>ホームページ</dt><dd><a href="' + makers[i].url + '">' + makers[i].url + '</a></dd>' +
+                    '</dl>'
                 );
                 $.ajax({
                     type: 'POST',
