@@ -114,6 +114,12 @@
                     $('#address').removeClass('autocomplete-loading');
                 });
             },
+            focus: function(event, ui) {
+                console.log(ui.item);
+                if(ui.item.value !== '') {
+                    $('#address').val(ui.item.label);
+                }
+            },
             select: function(event, ui) {
                 var val = ui.item.value;
                 if(val !== '') {
@@ -157,7 +163,7 @@
                         address: makers[i].address
                     }
                 }).done(function(data) {
-    	        flag++;
+    	            flag++;
                     if(data != 'null') {
                         var geo = $.parseJSON(data);
     		            var marker = new Y.Marker(new Y.LatLng(geo[0].coordinate.lat, geo[0].coordinate.lon));
