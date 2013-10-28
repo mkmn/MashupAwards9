@@ -76,7 +76,7 @@
                     address: request.term
                 }
             }).done(function(data) {
-                    if(data != 'null') {
+                if(data != 'null') {
                     cache = $.parseJSON(data);
                     var source = [];
                     for(var i=0; i<cache.length; i++) {
