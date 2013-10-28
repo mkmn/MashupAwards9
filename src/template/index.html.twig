@@ -21,7 +21,7 @@
   <div class="navbar navbar-inverse navbar-fixed-top">
     <div class="navbar-inner">
       <div class="container">
-        <a class="brand" href="/">Nonbe-旅行先からお近くの酒蔵を探します</a>
+        <a class="brand" href="/">Nonbe-旅行先の酒蔵を探します</a>
       </div>
     </div>
   </div>
@@ -48,6 +48,7 @@
     <div class="row">
       <div class="span8">
         <div id="map" style="width: 620px; height: 400px"></div>
+	<div id="output"><div>
       </div>
       <div class="span4">
         <div id="items"><h3>item一覧hogehogehoge</h3></div>
@@ -94,7 +95,6 @@
 	    var coordinate = cache[val].coordinate,
 	    YLL = new Y.LatLng(coordinate.lat, coordinate.lon);
 
-	    //各種設定
 	    ymap.drawMap(YLL, 17, Y.LayerSetId.NORMAL);
        }
     });
@@ -111,6 +111,8 @@
       }).done(function(data) {
         //dataはajaxによって返されたデータ
     	var makers = $.parseJSON(data);
+	//酒蔵の名前をマーカーに載せるために必要
+	var flag = -1;
 	    for(var i = 0; i<makers.length; i++){
             $.ajax({
                 type: 'POST',
@@ -119,10 +121,12 @@
                     address: makers[i].address
                 }
             }).done(function(data) {
+	        flag++;
                 if(data != 'null') {
                     var geo = $.parseJSON(data);
-                    console.log(geo[0].coordinate);
 		    var marker = new Y.Marker(new Y.LatLng(geo[0].coordinate.lat, geo[0].coordinate.lon));
+		    marker.title = makers[flag].name;
+		    console.log(makers[flag].name);
 		    ymap.addFeature(marker);
                 }
             });
