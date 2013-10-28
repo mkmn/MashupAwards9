@@ -34,7 +34,7 @@
 	    <label class="control-label" for="address">旅行先はどちら??</label>
 	    <div class="controls">
 	      <input id="address" name="address" type="text" class="span3" />
-          <input id="prefecture" name="prefecture" type="hidden">
+          <input id="prefecture" name="prefecture" type="hidden" value="13">
 	    </div>
 	  </div>
 	  <div class="control-group">
@@ -76,12 +76,14 @@
                     address: request.term
                 }
             }).done(function(data) {
-                cache = $.parseJSON(data);
-                var source = [];
-                for(var i=0; i<cache.length; i++) {
-                    source[i] = {label: cache[i].address, value: i};
+                if(data != 'null') {
+                    cache = $.parseJSON(data);
+                    var source = [];
+                    for(var i=0; i<cache.length; i++) {
+                        source[i] = {label: cache[i].address, value: i};
+                    }
+                    responce(source);
                 }
-                responce(source);
             });
         },
         select: function(event, ui) {
@@ -105,33 +107,30 @@
       event.preventDefault();
       $('#send').button('loading');
       var posturl = $('#data').attr("action");
-      //console.log(department);
-      //console.log(address);
-      //console.log(posturl);
       $.ajax({
         type: 'POST',
-	url: posturl,
-	data: {
-        prefecture: $('#prefecture').val()
-	}
+        url: posturl,
+	    data: {
+          prefecture: $('#prefecture').val()
+	    }
       }).done(function(data) {
         //dataはajaxによって返されたデータ
-	var infomakers = $.parseJSON(data);
-	console.log(infomakers);
-	for(var i = 0;i<infomakers.length;i++){
-	  markers.push(infomakers[i].coordinate);
-	}
-	console.log(markers);
-	/*for(var i=0; i<makers.length; i++) {
-	  markers.push( makers[i].geocode );
-	}
-	var makers = obj.makers;
-	console.log(makers[0].maker_name);
-	console.log(data);
-
-	地図に対する処理
-	ymap.addFeatures(markers); */
-	$('#send').button('reset');
+    	var makers = $.parseJSON(data);
+	    for(var i = 0; i<makers.length; i++){
+            $.ajax({
+                type: 'POST',
+                url: '{{ urlFor('address') }}',
+                data: {
+                    address: makers[i].address
+                }
+            }).done(function(data) {
+                if(data != 'null') {
+                    var geo = $.parseJSON(data);
+                    console.log(geo[0].coordinate);
+                }
+            });
+	    }
+	    $('#send').button('reset');
       });
     });
   </script>
