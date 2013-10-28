@@ -15,6 +15,7 @@ TOP: {
         }
 
         $makers = $container['repository.maker']->findByPrefecture($input['prefecture']);
+
         print json_encode($makers);
     })
     ->name('geoset');
