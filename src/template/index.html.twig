@@ -12,6 +12,10 @@
       padding-top: 60px;
       padding-bottom: 40px;
     }
+    .autocomplete-loading {
+        background: url('{{ asset('img/loader.gif') }}') right center no-repeat;
+        background-size: 16px 16px;
+    }
   </style>
   <link href="{{ asset('/bootstrap/css/bootstrap-responsive.css') }}" rel="stylesheet">
   <link href="{{ asset('/jquery-ui/css/jquery-ui-1.10.3.min.css') }}" rel="stylesheet">
@@ -50,7 +54,10 @@
         <div id="map" style="width: 620px; height: 400px"></div>
       </div>
       <div class="span4">
-        <div id="items"><h3>item一覧hogehogehoge</h3></div>
+        <h3>item一覧hogehogehoge</h3>
+        <div id="items">
+          <img src="{{ asset('img/loader.gif') }}" id="loader" class="text-center" style="display:none;">
+        </div>
       </div>
     </div>
     <footer>
@@ -69,6 +76,7 @@
         autoFocus: true,
         minLength: 2,
         source: function(request, responce) {
+            $('#address').addClass('autocomplete-loading');
             $.ajax({
                 type: 'POST',
                 url: '{{ urlFor('address') }}',
@@ -83,29 +91,36 @@
                         source[i] = {label: cache[i].address, value: i};
                     }
                     responce(source);
+                } else {
+                    responce([{label:'候補なし', value: ''}]);
                 }
+                $('#address').removeClass('autocomplete-loading');
             });
         },
         select: function(event, ui) {
             var val = ui.item.value;
-            $('#prefecture').val(cache[val].prefecture);
-            ui.item.value = cache[val].address;
-	    var coordinate = cache[val].coordinate,
-	    ymap = new Y.Map("map"),
-	    YLL = new Y.LatLng(coordinate.lat, coordinate.lon);
+            if(val != '') {
+                $('#prefecture').val(cache[val].prefecture);
+                ui.item.value = cache[val].address;
+	            
+                var coordinate = cache[val].coordinate,
+	            ymap = new Y.Map("map"),
+	            YLL = new Y.LatLng(coordinate.lat, coordinate.lon);
 
-	    //各種設定
-	    ymap.drawMap(YLL, 17, Y.LayerSetId.NORMAL);
-            ymap.setConfigure('dragging',true);
-            ymap.setConfigure('singleClickPan',true);
-            ymap.setConfigure('doubleClickZoom',true);
-            ymap.setConfigure('continuousZoom',true);
-            ymap.setConfigure('scrollWheelZoom',true);
+	            //各種設定
+	            ymap.drawMap(YLL, 17, Y.LayerSetId.NORMAL);
+                ymap.setConfigure('dragging',true);
+                ymap.setConfigure('singleClickPan',true);
+                ymap.setConfigure('doubleClickZoom',true);
+                ymap.setConfigure('continuousZoom',true);
+                ymap.setConfigure('scrollWheelZoom',true);
+            }
        }
     });
     $('#data').submit(function(event) {
       event.preventDefault();
       $('#send').button('loading');
+      $('#loader').toggle();
       var posturl = $('#data').attr("action");
       $.ajax({
         type: 'POST',
@@ -131,6 +146,7 @@
             });
 	    }
 	    $('#send').button('reset');
+        $('#loader').toggle();
       });
     });
   </script>
