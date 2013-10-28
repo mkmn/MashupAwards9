@@ -1,4 +1,4 @@
-<DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ja">
   <head>
   <meta charset="utf-8">
@@ -7,23 +7,38 @@
   <meta name="keywords" content="酒,酒造,旅">
   <meta name="author" content="Treasure2ndMA9-A">
   <link href="{{ asset('/bootstrap/css/bootstrap.css') }}" rel="stylesheet">
+  <link href="{{ asset('/bootstrap/css/bootstrap-responsive.css') }}" rel="stylesheet">
+  <link href="{{ asset('/jquery-ui/css/jquery-ui-1.10.3.min.css') }}" rel="stylesheet">
+  <link href="{{ asset('/select2-3.4.2/select2.css') }}" rel="stylesheet">
   <style type="text/css">
     body {
       padding-top: 60px;
       padding-bottom: 40px;
     }
+    @media (max-width: 980px) {
+        body {
+        padding-top: 0;
+        }
+    }
+    .loader {
+        display: block;
+        margin: auto;
+    }
     #makers {
-        height: 400px;
+        border: 1px solid #cccccc;
+        height:450px;
         overflow-y: scroll;
+    }
+    .maker {
+        margin:0;
+        padding: 5px 10px;
+        border-bottom: 1px solid #cccccc;
     }
     .autocomplete-loading {
         background: url('{{ asset('img/loader.gif') }}') right center no-repeat;
-        background-size: 16px 16px;
+        background-size: 20px 20px;
     }
   </style>
-  <link href="{{ asset('/bootstrap/css/bootstrap-responsive.css') }}" rel="stylesheet">
-  <link href="{{ asset('/jquery-ui/css/jquery-ui-1.10.3.min.css') }}" rel="stylesheet">
-  <link href="{{ asset('/select2-3.4.2/select2.css') }}" rel="stylesheet">
 </head>
 <body>
   <div class="navbar navbar-inverse navbar-fixed-top">
@@ -36,38 +51,34 @@
   <!-- ここからメインコンテンツ -->
   <div class="container">
     <div class="row">
-      <div class="span6 offset3">
-	<form action="{{ urlFor('geoset') }}" id="data" class="form-horizontal well">
-	  <div class="control-group">
-	    <label class="control-label" for="address">旅行先はどちら??</label>
-        <div class="controls">
-	      <input id="address" name="address" type="text" class="span3" />
-          <input id="prefecture" name="prefecture" type="hidden" value="13">
-	    </div>
-	  </div>
-	  <div class="control-group">
-	    <div class="controls offset3">
-	      <button id="send" type="submit" class="btn btn-success" data-loading-text="Loading...">送信</button>
-	    </div>
-	  </div>
-	</form>
-      </div>
-    </div>
-    <div class="row">
-      <div class="span8">
-        <div id="map" style="width: 620px; height: 400px"></div>
-      </div>
-      <div class="span4">
-        <div id="makers">
-            <h3>item一覧hogehogehoge</h3>
-            <img src="{{ asset('img/loader.gif') }}" id="loader" class="text-center" style="display:none;">
+      <div class="span8 offset2 well text-center">
+        <input id="prefecture" name="prefecture" type="hidden" value="13">
+        <span class="lead">旅行先はどちら??</span>
+        <div class="input-append">
+            <input id="address" name="address" type="text" class="span6">
+            <button id="send" type="button" class="btn btn-success" data-loading-text="Loading...">送信</button>
         </div>
       </div>
     </div>
-    <footer>
-      <p>&copy; Treasure2ndMA9-A 2013</p>
-    </footer>
+    <div class="row">
+      <div class="span8" id="map" style="height:500px;"></div>
+      <div class="span4">
+        <div class="navbar">
+            <div class="navbar-inner">
+                <span class="brand">旅行先の酒造</span>
+            </div>
+            <div id="makers">
+                <img src="{{ asset('img/loader.gif') }}" id="loader" class="loader" style="display:none;">
+            </div>
+        </div>
+      </div>
+    </div>
   </div>
+  <footer class="navbar navbar-fixed-bottom">
+    <div class="navbar-inner text-center">
+        <p>&copy; Treasure2ndMA9-A 2013</p>
+    </div>
+  </footer>
   <script src="{{ asset('/js/jquery-2.0.0.js') }}"></script>
   <script src="{{ asset('/jquery-ui/js/jquery-ui-1.10.3.min.js') }}"></script>
   <script src="{{ asset('/select2-3.4.2/select2.min.js') }}"></script>
@@ -75,87 +86,96 @@
   <script charset="utf-8" src="http://js.api.olp.yahooapis.jp/OpenLocalPlatform/V1/jsapi?appid=dj0zaiZpPXQzOGhaYWJZVGcxZSZzPWNvbnN1bWVyc2VjcmV0Jng9NDA-"></script>
   <script src="{{ asset('/js/main.js') }}"></script>
   <script>
-    var cache;
     var ymap = new Y.Map("map");
-    $('#address').autocomplete({
-        autoFocus: true,
-        minLength: 2,
-        source: function(request, responce) {
-            $('#address').addClass('autocomplete-loading');
-            $.ajax({
-                type: 'POST',
-                url: '{{ urlFor('address') }}',
-                data: {
-                    address: request.term
-                }
-            }).done(function(data) {
-                if(data != 'null') {
-                    cache = $.parseJSON(data);
-                    var source = [];
-                    for(var i=0; i<cache.length; i++) {
-                        source[i] = {label: cache[i].address, value: i};
+    $(function() { 
+        var cache;
+        $('#address').autocomplete({
+            autoFocus: true,
+            minLength: 2,
+            source: function(request, responce) {
+                $('#address').addClass('autocomplete-loading');
+                $.ajax({
+                    type: 'POST',
+                    url: '{{ urlFor('address') }}',
+                    data: {
+                        address: request.term
                     }
-                    responce(source);
-                } else {
-                    responce([{label:'候補なし', value: ''}]);
+                }).done(function(data) {
+                    if(data != 'null') {
+                        cache = $.parseJSON(data);
+                        var source = [];
+                        for(var i=0; i<cache.length; i++) {
+                            source[i] = {label: cache[i].address, value: i};
+                        }
+                        responce(source);
+                    } else {
+                        responce([{label:'候補なし', value: ''}]);
+                    }
+                    $('#address').removeClass('autocomplete-loading');
+                });
+            },
+            focus: function(event, ui) {
+                console.log(ui.item);
+                if(ui.item.value !== '') {
+                    $('#address').val(ui.item.label);
                 }
-                $('#address').removeClass('autocomplete-loading');
-            });
-        },
-        select: function(event, ui) {
-            var val = ui.item.value;
-            console.log(val);
-            if(val !== '') {
-                $('#prefecture').val(cache[val].prefecture);
-                ui.item.value = cache[val].address;
-	            
-                var coordinate = cache[val].coordinate,
-	            YLL = new Y.LatLng(coordinate.lat, coordinate.lon);
-
-	            ymap.drawMap(YLL, 17, Y.LayerSetId.NORMAL);
-            }
-       }
-    });
-    $('#data').submit(function(event) {
-      event.preventDefault();
-      $('#send').button('loading');
-      $('#loader').toggle();
-      $('.maker').remove();
-      var posturl = $('#data').attr("action");
-      $.ajax({
-        type: 'POST',
-        url: posturl,
-	    data: {
-          prefecture: $('#prefecture').val()
-	    }
-      }).done(function(data) {
-        //dataはajaxによって返されたデータ
-    	var makers = $.parseJSON(data);
-	//酒蔵の名前をマーカーに載せるために必要
-	var flag = -1;
-	    for(var i = 0; i<makers.length; i++){
-            $('#makers').append(
-                '<div class="maker">' + makers[i].name + '</div>'
-            );
-            $.ajax({
-                type: 'POST',
-                url: '{{ urlFor('address') }}',
-                data: {
-                    address: makers[i].address
+            },
+            select: function(event, ui) {
+                var val = ui.item.value;
+                if(val !== '') {
+                    $('#prefecture').val(cache[val].prefecture);
+                    ui.item.value = cache[val].address;
+    	            
+                    var coordinate = cache[val].coordinate,
+    	            YLL = new Y.LatLng(coordinate.lat, coordinate.lon);
+    
+    	            ymap.drawMap(YLL, 17, Y.LayerSetId.NORMAL);
                 }
-            }).done(function(data) {
-	        flag++;
-                if(data != 'null') {
-                    var geo = $.parseJSON(data);
-		    var marker = new Y.Marker(new Y.LatLng(geo[0].coordinate.lat, geo[0].coordinate.lon));
-		    marker.title = makers[flag].name;
-		    ymap.addFeature(marker);
-                }
-            });
-	    }
-	    $('#send').button('reset');
-        $('#loader').toggle();
-      });
+           }
+        });
+        $('#send').click(function() {
+          $('#send').button('loading');
+          $('#loader').toggle();
+          $('.maker').remove();
+          $.ajax({
+            type: 'POST',
+            url: '{{ urlFor('geoset') }}',
+    	    data: {
+              prefecture: $('#prefecture').val()
+    	    }
+          }).done(function(data) {
+            //dataはajaxによって返されたデータ
+        	var makers = $.parseJSON(data);
+           	//酒蔵の名前をマーカーに載せるために必要
+    	    var flag = -1;
+    	    for(var i = 0; i<makers.length; i++){
+                $('#makers').append(
+                    '<dl class="maker">' + 
+                        '<h4>' + makers[i].name + '</h4>' + 
+                        '<dt>住所</dt><dd>' + makers[i].address + '</dd>' +
+                        '<dt>ホームページ</dt><dd><a href="' + makers[i].url + '">' + makers[i].url + '</a></dd>' +
+                    '</dl>'
+                );
+                $.ajax({
+                    type: 'POST',
+                    url: '{{ urlFor('address') }}',
+                    data: {
+                        address: makers[i].address
+                    }
+                }).done(function(data) {
+    	            flag++;
+                    if(data != 'null') {
+                        var geo = $.parseJSON(data);
+    		            var marker = new Y.Marker(new Y.LatLng(geo[0].coordinate.lat, geo[0].coordinate.lon));
+    		            marker.title = makers[flag].name;
+    		            ymap.addFeature(marker);
+                    }
+                });
+    	    }
+    	    $('#send').button('reset');
+            $('#loader').toggle();
+          });
+        });
     });
   </script>
 </body>
