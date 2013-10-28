@@ -6,7 +6,6 @@ $(function() {
   ymap.setConfigure('doubleClickZoom',true);
   ymap.setConfigure('continuousZoom',true);
   ymap.setConfigure('scrollWheelZoom',true);
-  ymap.addControl(new Y.LayerSetControl);
   ymap.addControl(new Y.ScaleControl);
   ymap.addControl(new Y.ZoomControl);
 });

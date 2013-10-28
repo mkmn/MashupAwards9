@@ -48,7 +48,6 @@
     <div class="row">
       <div class="span8">
         <div id="map" style="width: 620px; height: 400px"></div>
-	<div id="output"><div>
       </div>
       <div class="span4">
         <div id="items"><h3>item一覧hogehogehoge</h3></div>
@@ -126,7 +125,6 @@
                     var geo = $.parseJSON(data);
 		    var marker = new Y.Marker(new Y.LatLng(geo[0].coordinate.lat, geo[0].coordinate.lon));
 		    marker.title = makers[flag].name;
-		    console.log(makers[flag].name);
 		    ymap.addFeature(marker);
                 }
             });
