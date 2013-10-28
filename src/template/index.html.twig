@@ -77,6 +77,7 @@
                 }
             }).done(function(data) {
                 cache = $.parseJSON(data);
+		console.log(cache);
                 var source = [];
                 for(var i=0; i<cache.length; i++) {
                     source[i] = {label: cache[i].address, value: i};
@@ -88,7 +89,18 @@
             var val = ui.item.value;
             $('#prefecture').val(cache[val].prefecture);
             ui.item.value = cache[val].address;
-        }
+	    var coordinate = cache[val].coordinate;
+	    var ymap = new Y.Map("map");
+	    console.log(ymap);
+	    var YLL = new Y.LatLng(coordinate.lat, coordinate.lon);
+	    console.log(coordinate.lat);
+	    ymap.drawMap(YLL, 17, Y.LayerSetId.NORMAL);
+            ymap.setConfigure('dragging',true);
+            ymap.setConfigure('singleClickPan',true);
+            ymap.setConfigure('doubleClickZoom',true);
+            ymap.setConfigure('continuousZoom',true);
+            ymap.setConfigure('scrollWheelZoom',true);
+       }
     });
     $('#data').submit(function(event) {
       event.preventDefault();
@@ -103,7 +115,7 @@
         prefecture: $('#prefecture').val()
 	}
       }).done(function(data) {
-        //dataはajaxによって返されたデータ
+        /*dataはajaxによって返されたデータ
 	var infomakers = $.parseJSON(data),
 	makers = infomakers.makers,
 	markers = [];
@@ -114,15 +126,8 @@
 	//console.log(makers[0].maker_name);
 	//console.log(data);
 
-	//地図に対する処理
-        var ymap = new Y.Map("map");
-        ymap.drawMap(new Y.LatLng(35, 139), 17, Y.LayerSetId.NORMAL);
-        ymap.setConfigure('dragging',true);
-        ymap.setConfigure('singleClickPan',true);
-        ymap.setConfigure('doubleClickZoom',true);
-        ymap.setConfigure('continuousZoom',true);
-        ymap.setConfigure('scrollWheelZoom',true);
-	ymap.addFeatures(marders);
+	*///地図に対する処理
+	//ymap.addFeatures(marders);
       });
     });
   </script>
