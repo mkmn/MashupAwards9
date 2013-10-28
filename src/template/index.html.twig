@@ -104,7 +104,8 @@
         },
         select: function(event, ui) {
             var val = ui.item.value;
-            if(val != '') {
+            console.log(val);
+            if(val !== '') {
                 $('#prefecture').val(cache[val].prefecture);
                 ui.item.value = cache[val].address;
 	            
