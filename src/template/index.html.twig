@@ -119,7 +119,6 @@
                 });
             },
             focus: function(event, ui) {
-                console.log(ui.item);
                 if(ui.item.value !== '') {
                     $('#address').val(ui.item.label);
                 }
@@ -135,7 +134,7 @@
     
     	            ymap.drawMap(YLL, 17, Y.LayerSetId.NORMAL);
                 }
-           }
+            }
         });
         $('#send').click(function() {
           $('#send').button('loading');
@@ -153,11 +152,12 @@
            	//酒蔵の名前をマーカーに載せるために必要
     	    var flag = -1;
     	    for(var i = 0; i<makers.length; i++){
+                var url = (makers[i].url)? makers[i].url: '#';
                 $('#makers').append(
                     '<dl class="maker">' + 
                         '<h4>' + makers[i].name + '</h4>' + 
                         '<dt>住所</dt><dd>' + makers[i].address + '</dd>' +
-                        '<dt>ホームページ</dt><dd><a href="' + makers[i].url + '">' + makers[i].url + '</a></dd>' +
+                        '<dt>ホームページ</dt><dd><a href="' + url + '">' + url + '</a></dd>' +
                     '</dl>'
                 );
                 $.ajax({
