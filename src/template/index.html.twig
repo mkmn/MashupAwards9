@@ -65,6 +65,7 @@
   <script src="{{ asset('/js/main.js') }}"></script>
   <script>
     var cache;
+    var ymap = new Y.Map("map");
     $('#address').autocomplete({
         autoFocus: true,
         minLength: 2,
@@ -91,16 +92,10 @@
             $('#prefecture').val(cache[val].prefecture);
             ui.item.value = cache[val].address;
 	    var coordinate = cache[val].coordinate,
-	    ymap = new Y.Map("map"),
 	    YLL = new Y.LatLng(coordinate.lat, coordinate.lon);
 
 	    //各種設定
 	    ymap.drawMap(YLL, 17, Y.LayerSetId.NORMAL);
-            ymap.setConfigure('dragging',true);
-            ymap.setConfigure('singleClickPan',true);
-            ymap.setConfigure('doubleClickZoom',true);
-            ymap.setConfigure('continuousZoom',true);
-            ymap.setConfigure('scrollWheelZoom',true);
        }
     });
     $('#data').submit(function(event) {
@@ -127,6 +122,8 @@
                 if(data != 'null') {
                     var geo = $.parseJSON(data);
                     console.log(geo[0].coordinate);
+		    var marker = new Y.Marker(new Y.LatLng(geo[0].coordinate.lat, geo[0].coordinate.lon));
+		    ymap.addFeature(marker);
                 }
             });
 	    }
